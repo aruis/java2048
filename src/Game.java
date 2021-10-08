@@ -71,6 +71,7 @@ public class Game {
 
                 if (piece.getValue() == rightPiece.getValue()) {
                     piece.setValue(piece.getValue() * 2);
+                    score = score + piece.getValue();
                     rightPiece.setValue(0);
                     compressRow(pieces);
                 }
@@ -106,6 +107,8 @@ public class Game {
      */
     public void play() {
 
+        score = 0;
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 board[i][j] = new Piece();
@@ -121,8 +124,13 @@ public class Game {
             print();
             String key = scanner.next();
             System.out.println(key);
-            this.directionMerge(key);
-            this.randomOnePiece();
+            if (this.directionMerge(key)) {
+                this.randomOnePiece();
+                System.out.println("当前得分为：" + score);
+            } else {
+                System.out.println("您只可以输入[a、s、d、w]中的一个字符。");
+            }
+
         }
 
 
@@ -133,7 +141,7 @@ public class Game {
      *
      * @param key
      */
-    public void directionMerge(String key) {
+    public boolean directionMerge(String key) {
 
         //a s d w
         if (key.equals("a")) { // 向左
@@ -142,9 +150,7 @@ public class Game {
                 mergeRow(pieces);
             }
 
-        }
-
-        if (key.equals("d")) { // 向右
+        } else if (key.equals("d")) { // 向右
             for (int i = 0; i < size; i++) {
                 Piece[] pieces = board[i];
                 Piece[] nPieces = new Piece[pieces.length];
@@ -160,9 +166,7 @@ public class Game {
                 }
             }
 
-        }
-
-        if (key.equals("w")) {
+        } else if (key.equals("w")) {
             for (int i = 0; i < size; i++) {
                 Piece[] nPieces = new Piece[size];
                 for (int j = 0; j < size; j++) {
@@ -174,9 +178,7 @@ public class Game {
                     board[j][i] = nPieces[j];
                 }
             }
-        }
-
-        if (key.equals("s")) {
+        } else if (key.equals("s")) {
             for (int i = 0; i < size; i++) {
                 Piece[] nPieces = new Piece[size];
                 for (int j = 0; j < size; j++) {
@@ -188,8 +190,11 @@ public class Game {
                     board[size - 1 - j][i] = nPieces[j];
                 }
             }
+        } else {
+            return false;
         }
 
+        return true;
     }
 
     public void randomOnePiece() {
@@ -205,15 +210,40 @@ public class Game {
         }
 
         if (pieces.size() == 0) {
-            this.over();
+            if (!canMerge()) {
+                this.over();
+            }
         } else {
             int i = random.nextInt(pieces.size());
             Piece piece = pieces.get(i);
 
-            piece.setValue(2);
+            int randomInt = random.nextInt(100) + 1;
+            if (randomInt < 85) {
+                piece.setValue(2);
+            } else if (randomInt < 95) {
+                piece.setValue(4);
+            } else if (randomInt < 98) {
+                piece.setValue(8);
+            } else {
+                piece.setValue(16);
+            }
+
 
         }
 
+    }
+
+    public boolean canMerge() {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - 1; j++) {
+                if (board[i][j].equals(board[i][j + 1]) || board[i][j].equals(board[i + 1][j])) {
+                    return true;
+                }
+
+            }
+        }
+
+        return false;
     }
 
 
