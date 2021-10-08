@@ -122,6 +122,7 @@ public class Game {
             String key = scanner.next();
             System.out.println(key);
             this.directionMerge(key);
+            this.randomOnePiece();
         }
 
 
@@ -144,15 +145,49 @@ public class Game {
         }
 
         if (key.equals("d")) { // 向右
+            for (int i = 0; i < size; i++) {
+                Piece[] pieces = board[i];
+                Piece[] nPieces = new Piece[pieces.length];
+
+                for (int j = 0; j < pieces.length; j++) {
+                    nPieces[nPieces.length - 1 - j] = pieces[j];
+                }
+
+                mergeRow(nPieces);
+
+                for (int j = 0; j < pieces.length; j++) {
+                    pieces[j] = nPieces[nPieces.length - 1 - j];
+                }
+            }
 
         }
 
         if (key.equals("w")) {
+            for (int i = 0; i < size; i++) {
+                Piece[] nPieces = new Piece[size];
+                for (int j = 0; j < size; j++) {
+                    nPieces[j] = board[j][i];
+                }
+                mergeRow(nPieces);
 
+                for (int j = 0; j < size; j++) {
+                    board[j][i] = nPieces[j];
+                }
+            }
         }
 
         if (key.equals("s")) {
+            for (int i = 0; i < size; i++) {
+                Piece[] nPieces = new Piece[size];
+                for (int j = 0; j < size; j++) {
+                    nPieces[j] = board[size - 1 - j][i];
+                }
+                mergeRow(nPieces);
 
+                for (int j = 0; j < size; j++) {
+                    board[size - 1 - j][i] = nPieces[j];
+                }
+            }
         }
 
     }

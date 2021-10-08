@@ -2,10 +2,19 @@ public class Piece {
 
     private int value = 0;
 
+    private boolean isNew = true;
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        if (value == 0) return "_";
+
+        if (isNew) {
+            isNew = false;
+            return "*" + value;
+        } else {
+            return String.valueOf(value);
+        }
+
     }
 
     @Override
