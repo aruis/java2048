@@ -1,34 +1,15 @@
-public class Piece {
-
-    private int value = 0;
-
-    private boolean isNew = true;
+public interface Piece {
+    @Override
+    String toString();
 
     @Override
-    public String toString() {
-        if (value == 0) return "_";
+    boolean equals(Object obj);
 
-        if (isNew) {
-            isNew = false;
-            return "*" + value;
-        } else {
-            return String.valueOf(value);
-        }
+    int expand();
 
-    }
+    boolean isBlank();
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        Piece b = (Piece) obj;
-        return this.getValue() == b.getValue();
-    }
+    void setBlank();
 
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
+    void init();
 }

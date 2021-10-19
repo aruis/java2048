@@ -19,6 +19,11 @@ public class Game {
         board = new Piece[size][size];
     }
 
+    public static Piece giveAPiece() {
+//        return new NumPiece();
+        return new ShengxiaoPiece();
+    }
+
     public static void main(String[] args) {
         Game game = new Game(4);
 //
@@ -26,29 +31,6 @@ public class Game {
         game.print();
 
 //        game.test();
-
-    }
-
-    public void test() {
-        Piece[] pieces = new Piece[4];
-        for (int i = 0; i < 4; i++) {
-            pieces[i] = new Piece();
-        }
-
-        pieces[0].setValue(2);
-        pieces[1].setValue(0);
-        pieces[2].setValue(2);
-        pieces[3].setValue(4);
-
-        printRow(pieces);
-
-        mergeRow(pieces);
-
-        printRow(pieces);
-
-        mergeRow(pieces);
-
-        printRow(pieces);
 
     }
 
@@ -69,10 +51,9 @@ public class Game {
                 Piece piece = pieces[i];
                 Piece rightPiece = pieces[i + 1];
 
-                if (piece.getValue() == rightPiece.getValue()) {
-                    piece.setValue(piece.getValue() * 2);
-                    score = score + piece.getValue();
-                    rightPiece.setValue(0);
+                if (!piece.isBlank() && piece.equals(rightPiece)) {
+                    score = score + piece.expand();
+                    rightPiece.setBlank();
                     compressRow(pieces);
                 }
 
@@ -86,7 +67,7 @@ public class Game {
     public void compressRow(Piece[] pieces) {
         ArrayList<Piece> temp = new ArrayList<>();
         for (int i = 0; i < pieces.length; i++) {
-            if (pieces[i].getValue() != 0) {
+            if (!pieces[i].isBlank()) {
                 temp.add(pieces[i]);
             }
         }
@@ -95,7 +76,7 @@ public class Game {
             if (temp.size() > i) {
                 pieces[i] = temp.get(i);
             } else {
-                pieces[i] = new Piece();
+                pieces[i] = giveAPiece();
             }
         }
 
@@ -111,7 +92,7 @@ public class Game {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                board[i][j] = new Piece();
+                board[i][j] = giveAPiece();
             }
         }
 
@@ -203,7 +184,7 @@ public class Game {
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (board[i][j].getValue() == 0) {
+                if (board[i][j].isBlank()) {
                     pieces.add(board[i][j]);
                 }
             }
@@ -216,16 +197,20 @@ public class Game {
         } else {
             int i = random.nextInt(pieces.size());
             Piece piece = pieces.get(i);
+            piece.init();
 
             int randomInt = random.nextInt(100) + 1;
-            if (randomInt < 85) {
-                piece.setValue(2);
-            } else if (randomInt < 95) {
-                piece.setValue(4);
-            } else if (randomInt < 98) {
-                piece.setValue(8);
-            } else {
-                piece.setValue(16);
+
+            if (randomInt > 85) {
+                piece.expand();
+            }
+
+            if (randomInt > 95) {
+                piece.expand();
+            }
+
+            if (randomInt > 98) {
+                piece.expand();
             }
 
 
