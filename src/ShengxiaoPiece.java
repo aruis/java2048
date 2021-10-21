@@ -1,8 +1,13 @@
+/**
+ * 十二生肖棋子
+ */
 public class ShengxiaoPiece implements Piece {
 
+    //十二生肖不像数字是无限的，所有走到"猪"的时候，会开启一个新的周期，此字段用来记录周期数
     private int cycle = 0;
 
-    private String[] shengxiao = new String[]{
+    //十二生肖周期数组
+    private final static String[] SHENGXIAO = new String[]{
             "鼠",
             "牛",
             "虎",
@@ -17,7 +22,9 @@ public class ShengxiaoPiece implements Piece {
             "猪",
     };
 
+    //当前生肖索引，针对 SHENGXIAO 数组的索引
     private int index = -1;
+
     private boolean isNew = true;
 
     @Override
@@ -47,13 +54,13 @@ public class ShengxiaoPiece implements Piece {
 
     @Override
     public String toString() {
-        if (index == -1) return "_";
+        if (isBlank()) return "_";
 
         if (isNew) {
             isNew = false;
-            return "*" + shengxiao[index];
+            return "*" + SHENGXIAO[index];
         } else {
-            return shengxiao[index];
+            return SHENGXIAO[index];
         }
     }
 

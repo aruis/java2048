@@ -1,6 +1,12 @@
+/**
+ * 数字棋子
+ */
 public class NumPiece implements Piece {
 
+    //数字棋子的数值
     private int value = 0;
+
+    //棋子是否是新创建
     private boolean isNew = true;
 
     @Override
