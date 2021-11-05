@@ -234,14 +234,20 @@ public class Game {
      */
     public boolean canMerge() {
         for (int i = 0; i < size - 1; i++) {
-            for (int j = 0; j < size - 1; j++) {
-                if (board[i][j].equals(board[i][j + 1]) || board[i][j].equals(board[i + 1][j])) {
+            for (int j = 0; j < size; j++) {
+                if (board[i][j].equals(board[i + 1][j])) {
                     return true;
                 }
-
             }
         }
 
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size - 1; j++) {
+                if (board[i][j].equals(board[i][j + 1])) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
